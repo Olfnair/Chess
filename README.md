@@ -1,6 +1,6 @@
 # Chess
 
-A chess game made with C++.
+A chess game written in C++. Only for Windows OS for now.
 
 There is 2 binaries in this project : a client and a server.
 
