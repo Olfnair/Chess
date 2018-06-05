@@ -1,2 +1,6 @@
+Chess
 Copyright (c) 2018 Florian Chalet aka Olfnair.
 All rights reserved.
+
+MariaDB-connector-C
+https://github.com/MariaDB/mariadb-connector-c/blob/master/COPYING.LIB
