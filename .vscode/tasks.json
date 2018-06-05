@@ -1,0 +1,56 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    
+    // Cleanup : supprime les fichiers dossiers build et dist -----------------------
+    {
+      "label": "Make cleanall",
+      "type": "shell",
+      "command": "mingw32-make cleanall",
+      "presentation": {
+        // Reveal the output only if unrecognized errors occur.
+        "reveal": "silent"
+      },
+      "problemMatcher" : []
+    },
+    //---------------------------------------------------------------------------------
+
+    // Compile avec le Makefile ---------------------------------------------------------
+    {
+      "label": "Make all",
+      "type": "shell",
+      "command": "mingw32-make",
+      "group": "build",
+      "presentation": {
+        // Reveal the output only if unrecognized errors occur.
+        "reveal": "silent"
+      },
+      // Use the standard gcc compiler pattern to detect errors, warnings and infos
+      "problemMatcher": {
+        "base": "$gcc",
+        "fileLocation": ["relative", "${workspaceRoot}"],
+      }
+    },
+    //-----------------------------------------------------------------------------
+
+    // Recompile avec le Makefile ---------------------------------------------------------
+    {
+      "label": "Rebuild all",
+      "type": "shell",
+      "command": "mingw32-make rebuild",
+      "group": "build",
+      "presentation": {
+        // Reveal the output only if unrecognized errors occur.
+        "reveal": "silent"
+      },
+      // Use the standard gcc compiler pattern to detect errors, warnings and infos
+      "problemMatcher": {
+        "base": "$gcc",
+        "fileLocation": ["relative", "${workspaceRoot}"],
+      }
+    }
+    //-----------------------------------------------------------------------------
+  ]
+}

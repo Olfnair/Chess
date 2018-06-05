@@ -1,0 +1,3 @@
+#include "resource.h"
+IDI_CHESS     ICON     "Chess.ico"
+IDI_SMALL     ICON     "small.ico"
