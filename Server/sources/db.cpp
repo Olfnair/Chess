@@ -46,6 +46,7 @@ MYSQL* DB_Connector::getObj() {
 
 // renvoie vrai si login et mdp forment une paire d'identifiants valide
 bool DB_CheckLogin(DB_Connector& db, const std::string& login, const std::string& pwd) {
+  // TODO : Utiliser des PreparedStatement pour empêcher les injections SQL un peu trop évidentes ici...
   std::string q = "SELECT * FROM players WHERE login='" + login + "' AND pwd='" + pwd + "'";
 
   if (db.query(q) != 0) {
