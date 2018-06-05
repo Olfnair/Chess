@@ -1,0 +1,2 @@
+Copyright (c) 2018 Florian Chalet aka Olfnair.
+All rights reserved.
