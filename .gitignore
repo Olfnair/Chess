@@ -18,6 +18,7 @@
 *.so
 *.dylib
 *.dll
+!libmariadb.dll
 
 # Fortran module files
 *.mod
