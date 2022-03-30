@@ -895,8 +895,8 @@ void GuiMainPanel::setFont(HFONT hfont) {
 
 // private:
 void GuiMainPanel::init() {
-  hLogin = CreateWindowEx(WS_EX_CLIENTEDGE, L"edit", nullptr, WS_CHILD | WS_VISIBLE | WS_TABSTOP, 0, 0, 0, 0, getWnd()->getHandle(), (HMENU)uniqueButtonID.generate(), nullptr, nullptr);
-  hPwd = CreateWindowEx(WS_EX_CLIENTEDGE, L"edit", nullptr, WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_PASSWORD, 0, 0, 0, 0, getWnd()->getHandle(), (HMENU)uniqueButtonID.generate(), nullptr, nullptr);
+  hLogin = CreateWindowEx(WS_EX_CLIENTEDGE, L"edit", nullptr, WS_CHILD | WS_VISIBLE | WS_TABSTOP, 0, 0, 0, 0, getWnd()->getHandle(), reinterpret_cast<HMENU>(uniqueButtonID.generate()), nullptr, nullptr);
+  hPwd = CreateWindowEx(WS_EX_CLIENTEDGE, L"edit", nullptr, WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_PASSWORD, 0, 0, 0, 0, getWnd()->getHandle(), reinterpret_cast<HMENU>(uniqueButtonID.generate()), nullptr, nullptr);
   MoveWindow(hLogin, getClientLoc().left + 75, getClientLoc().left + 15, 180, 22, true);
   MoveWindow(hPwd, getClientLoc().left + 390, getClientLoc().left + 15, 180, 22, true);
   connectID = GuiComponent::uniqueButtonID.generate();
