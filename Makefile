@@ -1,7 +1,7 @@
 CXX=g++
 
 #Compilation flags for C++ (-Wall -Werror)  -D_WIN32_WINNT=0x0501 is XP
-CXXFLAGS= -std=c++17 -Wall -O3 -D_WIN32_WINNT=0x0501 -DNDEBUG -DUNICODE -ffunction-sections -fdata-sections
+CXXFLAGS= -std=c++17 -m64 -Wall -O3 -D_WIN32_WINNT=0x0501 -DNDEBUG -DUNICODE -ffunction-sections -fdata-sections
 
 #Directories
 SOURCE_DIR=sources
