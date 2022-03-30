@@ -1,6 +1,6 @@
-#include "Win32Window.h"
-
 #include "tools.h"
+
+#include "Win32Window.h"
 
 #include <windows.h>
 #include <string>
