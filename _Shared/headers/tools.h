@@ -15,23 +15,24 @@
 
 #define MAX_BASE (strlen(FIGURES))
 
-class UniquidGenerator {
-public:
+class UniquidGenerator
+{
+ public:
   UniquidGenerator(unsigned int startVal);
   ~UniquidGenerator() = default;
   unsigned int generate();
 
-private:
+ private:
   unsigned int uniquid;
 };
 
-template <class I, class E, class S>
-class codecvt : public std::codecvt<I, E, S> {
-public:
+template<class I, class E, class S> class codecvt : public std::codecvt<I, E, S>
+{
+ public:
   ~codecvt() = default;
 };
 
-extern UniquidGenerator uniqueExceptionID; // globale
+extern UniquidGenerator uniqueExceptionID;  // globale
 extern UniquidGenerator uniqueTimerID;
 
 extern const int FILE_EXC;
@@ -46,20 +47,22 @@ int gettimeofday(timeval* tp, void* tz);
 void millisec2timeval(int millisec, timeval* x);
 long timevalDiff(const timeval& a, const timeval& b);
 
-class File { // juste pour manipuler rapidement des fichiers de config ... (avec une info par ligne, quick & dirty : sorry)
-public:
+class File
+{  // juste pour manipuler rapidement des fichiers de config ... (avec une info par ligne, quick & dirty : sorry)
+ public:
   File(const char* filename);
   ~File();
   void close();
   std::string readline();
 
-private:
+ private:
   std::ifstream f;
   bool closed;
 };
 
-class Buffer {
-public:
+class Buffer
+{
+ public:
   Buffer(unsigned int size);
   ~Buffer();
   Buffer(const Buffer& b);
@@ -73,10 +76,10 @@ public:
   const char* getData() const;
   void print(std::string& str);
 
-private:
+ private:
   char* data;
   unsigned int size;
   unsigned int length;
 };
 
-#endif // TOOLS_H
+#endif  // TOOLS_H

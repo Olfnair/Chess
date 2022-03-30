@@ -17,20 +17,24 @@
 RECT createRC(LONG left, LONG top, LONG right, LONG bottom);
 bool isInsideRect(int x, int y, RECT rc);
 
-class GdiplusInit final { // juste un gros hack pour initialiser gdi+ avant les autres variables statiques (ça permet d'avoir des Images préchargées comme membres statiques dans les classes)
-private:
-	GdiplusInit() = default; // Pas instanciable
-  static class Init {      // En java on emploierait le bloc static
-  public:
+class GdiplusInit final
+{  // juste un gros hack pour initialiser gdi+ avant les autres variables statiques (ça permet d'avoir des Images préchargées comme membres statiques dans les classes)
+ private:
+  GdiplusInit() = default;  // Pas instanciable
+  static class Init
+  {  // En java on emploierait le bloc static
+   public:
     Init();
     ~Init();
-  private:
+
+   private:
     ULONG_PTR gdiplusToken;
   } init;
 };
 
-class GuiComponent {
-public:
+class GuiComponent
+{
+ public:
   GuiComponent(bool enabled = true);
   GuiComponent(const Win32Window* window, RECT rcLoc = createRC(0, 0, 0, 0), bool enabled = true);
   GuiComponent(const GuiComponent* parent, RECT rcLoc = createRC(0, 0, 0, 0), bool enabled = true);
@@ -43,8 +47,8 @@ public:
   virtual void disable();
   bool isEnabled() const;
   virtual void setLocation(RECT rcLoc);
-  RECT getLocation() const; // coordonnées relatives au parent
-  RECT getClientLoc() const; // coordonnées réelles dans la client area
+  RECT getLocation() const;  // coordonnées relatives au parent
+  RECT getClientLoc() const;  // coordonnées réelles dans la client area
   void resize(int x, int y);
   void setWnd(Win32Window* window);
   void setParent(GuiComponent* parent);
@@ -55,21 +59,22 @@ public:
   void setMessWndHandle(HWND hwnd);
   HWND getMessWndHandle();
 
-protected:
+ protected:
   static UniquidGenerator uniqueWM;
   static UniquidGenerator uniqueButtonID;
   static UniquidGenerator uniqueTimerID;
 
-private:
+ private:
   bool enabled;
-  RECT rcLoc; // indique position et dimensions du composant : la position est relative à celle du composant parent, ou à la fenêtre si pas de parent
+  RECT rcLoc;  // indique position et dimensions du composant : la position est relative à celle du composant parent, ou à la fenêtre si pas de parent
   const Win32Window* window;
   const GuiComponent* parent;
   HWND hMessWnd;
 };
 
-class GuiPanel : public GuiComponent {
-public:
+class GuiPanel : public GuiComponent
+{
+ public:
   GuiPanel(bool enabled = true);
   GuiPanel(const Win32Window* window, RECT rcLoc, bool enabled = true);
   GuiPanel(const GuiComponent* parent, RECT rcLoc, bool enabled = true);
@@ -88,7 +93,7 @@ public:
   void drawText(HDC hdc, const std::u16string& u16text, unsigned int x, unsigned int y);
   void drawText(HDC hdc, const std::string& u8text, unsigned int x, unsigned int y);
 
-private:
+ private:
   void init();
 
   HBRUSH hbrush;
@@ -99,8 +104,9 @@ private:
   COLORREF oldTextcolor;
 };
 
-class GuiButton : public GuiPanel {
-public:
+class GuiButton : public GuiPanel
+{
+ public:
   GuiButton(bool enabled = true);
   GuiButton(const Win32Window* window, RECT rcLoc, unsigned int buttonID = 0, bool enabled = true);
   GuiButton(const GuiComponent* parent, RECT rcLoc, unsigned int buttonID = 0, bool enabled = true);
@@ -113,10 +119,10 @@ public:
   void setID(unsigned int id);
   unsigned int getID();
 
-private:
+ private:
   char state;
   unsigned int buttonID;
-  std::u16string text; // UTF 16 (wchar, car l'API WIN32 emploie des WCHAR en UTF 16 pour le texte)
+  std::u16string text;  // UTF 16 (wchar, car l'API WIN32 emploie des WCHAR en UTF 16 pour le texte)
 
   static const char STATE_BUTTON = 0;
   static const char STATE_CLICKED = 1;
@@ -126,20 +132,22 @@ private:
   static Gdiplus::Image imButtonHover;
 };
 
-class GuiPiece : public GuiComponent {
-public:
+class GuiPiece : public GuiComponent
+{
+ public:
   GuiPiece(const WCHAR* path, bool enabled = true, Win32Window* window = nullptr);
   virtual ~GuiPiece() = default;
   virtual bool draw(HDC hdc, Gdiplus::Graphics* graphics = nullptr) override;
   bool drawAt(int x, int y, HDC hdc, Gdiplus::Graphics* graphics = nullptr);
   Gdiplus::Image* getImage();
 
-private:
+ private:
   Gdiplus::Image image;
 };
 
-class GuiSelectedPiece : public GuiComponent {
-public:
+class GuiSelectedPiece : public GuiComponent
+{
+ public:
   GuiSelectedPiece(bool enabled = false);
   GuiSelectedPiece(Win32Window* window, bool enabled = false);
   GuiSelectedPiece(GuiComponent* parent, bool enabled = false);
@@ -150,13 +158,14 @@ public:
   Chess::Pos getFrom();
   void setFrom(int i);
 
-private:
+ private:
   GuiPiece* piece;
   Chess::Pos from;
 };
 
-class GuiChessBoard : public GuiComponent {
-public:
+class GuiChessBoard : public GuiComponent
+{
+ public:
   GuiChessBoard(bool enabled = false);
   GuiChessBoard(Win32Window* window, RECT rcLoc, bool enabled = false);
   GuiChessBoard(GuiComponent* parent, RECT rcLoc, bool enabled = false);
@@ -174,12 +183,12 @@ public:
   void disableSelection();
   void cancelSelection();
 
-private:
+ private:
   static const int BSIZE = 8;  // taille de la board
-  static const int DECAL = 56; // taille en pixels du rebord (il faut décaler quand on draw les pieces)
-  static const int PSIZE = 50; // largeur/hauteur en pixel d'une piece
+  static const int DECAL = 56;  // taille en pixels du rebord (il faut décaler quand on draw les pieces)
+  static const int PSIZE = 50;  // largeur/hauteur en pixel d'une piece
 
-	static GuiPiece whitePawn;
+  static GuiPiece whitePawn;
   static GuiPiece whiteRook;
   static GuiPiece whiteKnight;
   static GuiPiece whiteBishop;
@@ -201,8 +210,9 @@ private:
   int translateIndex(int i);
 };
 
-class GuiColorInfo : public GuiPanel {
-public:
+class GuiColorInfo : public GuiPanel
+{
+ public:
   GuiColorInfo(bool enabled = true);
   GuiColorInfo(Win32Window* window, bool enabled = true);
   GuiColorInfo(GuiComponent* parent, bool enabled = true);
@@ -217,15 +227,16 @@ public:
   void setSide2Move(bool val);
   bool isSideToMove();
 
-private:
+ private:
   unsigned int timer;
   Chess::Color color;
   std::string playerName;
   bool side2move;
 };
 
-class GuiWaitPanel : public GuiPanel {
-public:
+class GuiWaitPanel : public GuiPanel
+{
+ public:
   GuiWaitPanel(bool enabled = false);
   GuiWaitPanel(Win32Window* window, bool enabled = false);
   GuiWaitPanel(GuiComponent* parent, bool enabled = false);
@@ -235,15 +246,16 @@ public:
   void setFont(HFONT hfont);
   void setMessWndHandle(HWND hwnd);
 
-private:
+ private:
   void init();
 
   GuiButton backButton;
   unsigned int backID;
 };
 
-class GuiGamePanel : public GuiPanel {
-public:
+class GuiGamePanel : public GuiPanel
+{
+ public:
   GuiGamePanel(bool enabled = false);
   GuiGamePanel(Win32Window* window, bool enabled = false);
   GuiGamePanel(GuiComponent* parent, bool enabled = false);
@@ -262,7 +274,7 @@ public:
   void setFont(HFONT hfont);
   void setMessWndHandle(HWND hwnd);
 
-private:
+ private:
   void init();
   void resetBoard();
 
@@ -277,8 +289,9 @@ private:
   unsigned int backID;
 };
 
-class GuiMenu : public GuiPanel {
-public:
+class GuiMenu : public GuiPanel
+{
+ public:
   GuiMenu(bool enabled = false);
   GuiMenu(const Win32Window* window, RECT rcLoc, bool enabled = true);
   GuiMenu(const GuiComponent* parent, RECT rcLoc, bool enabled = true);
@@ -289,7 +302,7 @@ public:
   void setFont(HFONT hfont);
   void setMessWndHandle(HWND hwnd);
 
-private:
+ private:
   std::vector<GuiButton> buttons;
 
   static const int XMARGIN = 100;
@@ -297,15 +310,16 @@ private:
   static const int HEIGHT = 80;
 };
 
-class GuiMainMenu : public GuiMenu {
-public:
+class GuiMainMenu : public GuiMenu
+{
+ public:
   GuiMainMenu(bool enabled = false);
   GuiMainMenu(const Win32Window* window, RECT rcLoc, bool enabled = true);
   GuiMainMenu(const GuiComponent* parent, RECT rcLoc, bool enabled = true);
   virtual ~GuiMainMenu() = default;
   virtual LRESULT eventListener(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) override;
 
-private:
+ private:
   void init();
 
   unsigned int soloID;
@@ -313,8 +327,9 @@ private:
   unsigned int exitID;
 };
 
-class GuiMainPanel : public GuiPanel {
-public:
+class GuiMainPanel : public GuiPanel
+{
+ public:
   GuiMainPanel() = default;
   GuiMainPanel(Win32Window* window, RECT rcLoc, bool enabled = false);
   GuiMainPanel(GuiComponent* parent, RECT rcLoc, bool enabled = false);
@@ -331,7 +346,7 @@ public:
   void setCS(ConnectionStatus::ConnectionStatus cs);
   void setFont(HFONT hfont);
 
-private:
+ private:
   void init();
 
   HWND hLogin;
@@ -342,8 +357,9 @@ private:
   std::string strCS;
 };
 
-class ChessWin : public Win32Window {
-public:
+class ChessWin : public Win32Window
+{
+ public:
   ChessWin(const HINSTANCE hInst, const std::string title, const std::string wndClass, const int width, const int height, const DWORD style);
   virtual ~ChessWin();
   LRESULT wndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -365,8 +381,8 @@ public:
   int getLogin(char* str, int size);
   int getPassword(char* str, int size);
   void gamePanelSetPos(bool multi);
-  
-private:
+
+ private:
   GuiMainPanel mainPanel;
   GuiWaitPanel waitPanel;
   GuiGamePanel gamePanel;
@@ -378,4 +394,4 @@ private:
   Chess::Game game;
 };
 
-#endif // GUI_H
+#endif  // GUI_H

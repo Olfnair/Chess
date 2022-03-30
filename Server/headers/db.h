@@ -9,8 +9,9 @@
 
 extern const int MYSQL_EXC;
 
-class DB_Connector {
-public:
+class DB_Connector
+{
+ public:
   DB_Connector();
   DB_Connector(const std::string& host, const std::string& user, const std::string& pwd, const std::string& db);
   ~DB_Connector();
@@ -20,11 +21,11 @@ public:
   my_ulonglong getRowCount();
   MYSQL* getObj();
 
-private:
+ private:
   MYSQL* mysql;
 };
 
 // requêtes préparées :
 bool DB_CheckLogin(DB_Connector& db, const std::string& login, const std::string& pwd);
 
-#endif // DB_H
+#endif  // DB_H

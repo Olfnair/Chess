@@ -12,10 +12,11 @@
 #include <list>
 #include <windows.h>
 
-template <typename Container, typename Element>
-bool container_erase(Container& c, Element& e) {
+template<typename Container, typename Element> bool container_erase(Container& c, Element& e)
+{
   auto it = std::find(c.begin(), c.end(), e);
-  if (it != c.end()) {
+  if (it != c.end())
+  {
     c.erase(it);
     return true;
   }
@@ -24,8 +25,9 @@ bool container_erase(Container& c, Element& e) {
 
 void handleException(int e);
 
-class SharedGame {
-public:
+class SharedGame
+{
+ public:
   SharedGame() = default;
   SharedGame(const SharedGame&) = delete;
   SharedGame(SharedGame&&) = delete;
@@ -33,43 +35,48 @@ public:
   void lock();
   void unlock();
 
-public:
+ public:
   Chess::Game* game;
 
-private:
+ private:
   std::mutex mutex;
 };
 
-class TaskV2 : public Task<void> {
-public:
+class TaskV2 : public Task<void>
+{
+ public:
   TaskV2() = default;
-  TaskV2(HWND hwnd) : hwnd(hwnd) {}
+  TaskV2(HWND hwnd) : hwnd(hwnd)
+  {
+  }
   virtual ~TaskV2() = default;
   TaskV2(const TaskV2&) = delete;
   TaskV2(TaskV2&&) = delete;
   void setHwnd(HWND hwnd);
 
-protected:
-  HWND hwnd; // handle vers la file de messages
+ protected:
+  HWND hwnd;  // handle vers la file de messages
 };
 
-class TaskListen : public TaskV2 { // le thread qui accepte les clients
-public:
+class TaskListen : public TaskV2
+{  // le thread qui accepte les clients
+ public:
   TaskListen() = default;
   virtual ~TaskListen() = default;
   TaskListen(const TaskListen&) = delete;
   TaskListen(TaskListen&&) = delete;
   TCP_Socket& getGuest();
 
-private:
+ private:
   virtual void main();
 
-private:
+ private:
   TCP_Socket guest;
 };
 
-class TaskGuest : public TaskV2 { // thread qui écoute les messages envoyés par un client : un par client connecté
-public:
+class TaskGuest : public TaskV2
+{  // thread qui écoute les messages envoyés par un client : un par client connecté
+ public:
   TaskGuest();
   TaskGuest(HWND hwnd, const TCP_Socket* sock);
   virtual ~TaskGuest() = default;
@@ -87,43 +94,44 @@ public:
   ConnectionStatus::ConnectionStatus getCS();
   void setCS(ConnectionStatus::ConnectionStatus cs);
 
-private:
+ private:
   virtual void main();
   void extractMessages(Buffer& buf, NetMessage& msg);
   void recvLoop(TCP_Socket& sock, NetMessage& msg);
 
-private:
+ private:
   TCP_Socket sock;
   NetMessage msg;
   ConnectionStatus::ConnectionStatus connectionStatus;
   Guest* guest;
   SharedGame sgame;
-  Thread<TaskGuest>* other; // l'autre joueur
+  Thread<TaskGuest>* other;  // l'autre joueur
 };
 
-class ServerMain : public Win32Window {
-public:
+class ServerMain : public Win32Window
+{
+ public:
   ServerMain(const HINSTANCE hInst, const std::string wndClass);
   ~ServerMain();
   int mainLoop();
   LRESULT wndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-private:
+ private:
   void close(Thread<TaskGuest>* tg);
   bool deleteGuest(Thread<TaskGuest>* tg);
   bool deleteGame(Thread<TaskGuest>* tg);
   int send(Thread<TaskGuest>* tg, unsigned int id, const void* data = nullptr, unsigned int datalen = 0);
   bool handleMessage(Thread<TaskGuest>* tg);
 
-private:
+ private:
   DB_Connector db;
   Thread<TaskListen> threadListen;
   std::list<Thread<TaskGuest>*> threadsGuests;
-  std::list<Guest*> guests;      // client connectés
-  std::list<Chess::Game*> games; // parties en cours
-  Thread<TaskGuest>* queue;      // le client en attente d'une partie
+  std::list<Guest*> guests;  // client connectés
+  std::list<Chess::Game*> games;  // parties en cours
+  Thread<TaskGuest>* queue;  // le client en attente d'une partie
   Win32Window window;
   NetMessage msg;
 };
 
-#endif // SERVER_H
+#endif  // SERVER_H

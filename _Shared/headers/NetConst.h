@@ -1,29 +1,31 @@
 #ifndef NETCONST_H
 #define NETCONST_H
 
-namespace NetMsgId {
-	enum NetMsgId {
-		ID = 0,
-		ID_INVALID,
-		ID_OK,
-		LOGIN,
-		PWD,
-		DISCO,
-		PING,
-		GAME_RANDOM,
-		GAME_FRIEND,
-		GAME_REFUSE,
-		GAME_START,
-		GAME_OVER,
-		SURRENDER,
-		DRAW,
-		ASK_DRAW,
-		DRAW_REFUSE,
-		DRAW_OK,
-		MOVE,
-		MOVE_OK,
-		MOVE_INVALID
-	};
+namespace NetMsgId
+{
+enum NetMsgId
+{
+  ID = 0,
+  ID_INVALID,
+  ID_OK,
+  LOGIN,
+  PWD,
+  DISCO,
+  PING,
+  GAME_RANDOM,
+  GAME_FRIEND,
+  GAME_REFUSE,
+  GAME_START,
+  GAME_OVER,
+  SURRENDER,
+  DRAW,
+  ASK_DRAW,
+  DRAW_REFUSE,
+  DRAW_OK,
+  MOVE,
+  MOVE_OK,
+  MOVE_INVALID
+};
 };
 
-#endif // NETCONST_H
+#endif  // NETCONST_H

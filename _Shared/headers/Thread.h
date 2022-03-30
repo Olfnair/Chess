@@ -13,8 +13,9 @@
 #include <thread>
 #endif
 
-class semaphore {
-public:
+class semaphore
+{
+ public:
   semaphore(int count = 0);
   ~semaphore() = default;
   semaphore(const semaphore&) = delete;
@@ -22,7 +23,7 @@ public:
   void wait();
   void signal();
 
-private:
+ private:
   unsigned int next_ticket;
   unsigned int ticket_turn;
   int count;
@@ -30,15 +31,17 @@ private:
   std::condition_variable cv;
 };
 
-template <typename Type>
-struct __ret_value_container {
+template<typename Type> struct __ret_value_container
+{
   std::atomic<Type> data;
 };
-template <>
-struct __ret_value_container<void> {};
+template<> struct __ret_value_container<void>
+{
+};
 
-class ITask {
-public:
+class ITask
+{
+ public:
   virtual bool isRunning() const = 0;
   virtual bool isOver() const = 0;
   virtual void halt() = 0;
@@ -48,12 +51,13 @@ public:
   ITask(const ITask&) = delete;
   ITask(ITask&&) = delete;
 
-protected:
+ protected:
   ITask() = default;
 };
 
-class VTask : public ITask {
-public:
+class VTask : public ITask
+{
+ public:
   virtual ~VTask() = default;
   VTask(const VTask&) = delete;
   VTask(VTask&&) = delete;
@@ -65,7 +69,7 @@ public:
   void lock();
   void unlock();
 
-protected:
+ protected:
   VTask();
   void wait();
   void begin();
@@ -73,69 +77,80 @@ protected:
 
   std::mutex task_mutex;
 
-private:
+ private:
   semaphore sem;
   std::atomic<bool> running;
   std::atomic<bool> over;
 };
 
-template <typename T>
-class Task : public VTask {
-public:
+template<typename T> class Task : public VTask
+{
+ public:
   Task() = default;
   virtual ~Task() = default;
   Task(const Task&) = delete;
   Task(Task&&) = delete;
-  virtual void run() {
+  virtual void run()
+  {
     begin();
     ret_value.data = main();
     end();
   }
-  T getReturnValue() const {
+  T getReturnValue() const
+  {
     return ret_value.data;
   }
 
-protected:
+ protected:
   virtual T main() = 0;
 
-private:
+ private:
   __ret_value_container<T> ret_value;
 };
 
-template <>
-void Task<void>::getReturnValue() const = delete;
-template <>
-inline void Task<void>::run() {
+template<> void Task<void>::getReturnValue() const = delete;
+template<> inline void Task<void>::run()
+{
   begin();
   main();
   end();
 }
 
-template <typename Task>
-class Thread : public Task {
-public:
-  Thread() : Task(), started(false) {}
-  template <typename... Args>
-  Thread(Args... args) : Task(args...), started(false) {}
-  ~Thread() {
+template<typename Task> class Thread : public Task
+{
+ public:
+  Thread() : Task(), started(false)
+  {
+  }
+  template<typename... Args> Thread(Args... args)
+      : Task(args...), started(false)
+  {
+  }
+  ~Thread()
+  {
     join();
   }
   Thread(const Thread&) = delete;
   Thread(Thread&&) = delete;
-  void join() {
-    if (started && t.joinable()) {
+  void join()
+  {
+    if (started && t.joinable())
+    {
       t.join();
       started = false;
     }
   }
-  void detach() {
+  void detach()
+  {
     if (started)
       t.detach();
   }
-  bool hasStarted() const {
+  bool hasStarted() const
+  {
     return started;
   }
-  bool start() {
+  bool start()
+  {
     if (started)
       return false;
     started = true;
@@ -143,9 +158,9 @@ public:
     return true;
   }
 
-private:
+ private:
   std::thread t;
   std::atomic<bool> started;
 };
 
-#endif // THREAD_H
+#endif  // THREAD_H
