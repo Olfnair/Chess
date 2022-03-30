@@ -41,5 +41,5 @@
     "shared_mutex": "cpp",
     "vector": "cpp"
   },
-  "C_Cpp.errorSquiggles": "Disabled"
+  "C_Cpp.errorSquiggles": "Enabled"
 }

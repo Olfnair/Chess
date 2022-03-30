@@ -30,7 +30,7 @@
       // Use the standard gcc compiler pattern to detect errors, warnings and infos
       "problemMatcher": {
         "base": "$gcc",
-        "fileLocation": ["relative", "${workspaceRoot}"],
+        "fileLocation": ["relative", "${workspaceFolder}"],
       }
     },
     //-----------------------------------------------------------------------------
@@ -48,7 +48,7 @@
       // Use the standard gcc compiler pattern to detect errors, warnings and infos
       "problemMatcher": {
         "base": "$gcc",
-        "fileLocation": ["relative", "${workspaceRoot}"],
+        "fileLocation": ["relative", "${workspaceFolder}"],
       }
     }
     //-----------------------------------------------------------------------------
